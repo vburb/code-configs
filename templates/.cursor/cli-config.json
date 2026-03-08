@@ -1,0 +1,59 @@
+{
+  "permissions": {
+    "allow": [
+      "Shell(ls)",
+      "Shell(git diff)",
+      "Shell(git status)",
+      "Shell(git log)",
+      "Shell(git branch)",
+      "Shell(git checkout)",
+      "Shell(python3)",
+      "Shell(pytest)",
+      "Shell(ruff)",
+      "Shell(mypy)",
+      "Shell(mkdir)",
+      "Shell(cat)",
+      "Shell(grep)",
+      "Shell(echo)",
+      "Shell(head)",
+      "Shell(tail)",
+      "Mcp(context7:query-docs)",
+      "Mcp(context7:resolve-library-id)"
+    ],
+    "deny": [
+      "Shell(rm)",
+      "Shell(curl)",
+      "Shell(wget)",
+      "Shell(ssh)",
+      "Shell(scp)",
+      "Shell(chmod)",
+      "Shell(chown)",
+      "Shell(sudo)",
+      "Shell(eval)",
+      "Shell(exec)",
+      "Read(.env*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/*secret*)",
+      "Read(**/*credential*)",
+      "Write(.env*)",
+      "Write(**/*.pem)",
+      "Write(**/*.key)",
+      "Write(.git/**)",
+      "Write(.github/**)"
+    ]
+  },
+  "model": {
+    "modelId": "composer-1.5",
+    "displayModelId": "composer-1.5",
+    "displayName": "Composer 1.5",
+    "displayNameShort": "Composer 1.5",
+    "aliases": [],
+    "maxMode": false
+  },
+  "hasChangedDefaultModel": true,
+  "webFetchDomainAllowlist": [
+    "docs.cursor.com",
+    "raw.githubusercontent.com"
+  ]
+}

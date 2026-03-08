@@ -1,0 +1,21 @@
+// on mac this file is stored in ~/ outside of the ~/.claude/* directory
+// only controls MCP settings
+{
+  "mcpServers": {
+    "markitdown": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "markitdown-mcp"
+      ],
+      "gallery": true
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "YOUR-API-KEY-HERE"
+      }
+    }
+  }
+}

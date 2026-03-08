@@ -1,0 +1,77 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "mcp": {
+        "context7": {
+            "type": "remote",
+            "url": "https://mcp.context7.com/mcp",
+            "headers": {
+                "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+            },
+            "enabled": true
+        }
+    },
+    "agent": {
+        "general": {
+            "mode": "primary"
+        }
+    },
+    "default_agent": "general",
+    "autoupdate": true,
+    "compaction": {
+        "auto": true,
+        "prune": true,
+        "reserved": 10000
+    },
+    "watcher": {
+        "ignore": [
+            "dist/**",
+            ".git/**",
+            ".venv/**"
+        ]
+    },
+    "permission": {
+        "bash": {
+            "git diff *": "allow",
+            "git log *": "allow",
+            "git status *": "allow",
+            "git branch *": "allow",
+            "git checkout *": "allow",
+            "uv *": "allow",
+            "python3 *": "allow",
+            "ruff *": "allow",
+            "ls *": "allow",
+            "mkdir *": "allow",
+            "cat *": "allow",
+            "grep *": "allow",
+            "tail *": "allow",
+            "head *": "allow",
+            "rm *": "deny",
+            "git commit *": "deny",
+            "git push *": "deny",
+            "git reset *": "deny",
+            "curl *": "deny",
+            "wget *": "deny",
+            "ssh *": "deny",
+            "chmod *": "deny"
+        },
+        "read": {
+            "*.env": "deny",
+            "*.env.*": "deny",
+            "*.env.example": "deny",
+            "*.venv": "deny",
+            "*.venv.*": "deny",
+            "**/*secret*": "deny",
+            "**/*credential*": "deny",
+            "**/*.key": "deny",
+            "**/*.pem": "deny"
+        },
+        "edit": {
+            "*.env": "deny",
+            "*.env.*": "deny",
+            "*.env.example": "deny",
+            "*.venv": "deny",
+            "*.venv.*": "deny",
+            "*.venv.example": "deny"
+        }
+    }
+}

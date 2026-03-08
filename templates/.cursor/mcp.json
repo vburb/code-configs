@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "markitdown": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "markitdown-mcp"
+      ],
+      "gallery": true
+    },
+    "context7": {
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "YOUR-API-KEY-HERE"
+      }
+    }
+  }
+}

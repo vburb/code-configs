@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Copy to: <project-root>/.git/hooks/pre-push
+# Then make executable: chmod +x .git/hooks/pre-push
+#
+# Checks the full repo with ruff (format + lint) before pushing.
+# Does NOT auto-fix — prints instructions instead so you stay in control.
+#
+# Skip flag:
+#   SKIP_RUFF=1 git push  — skip ruff entirely
+
+set -euo pipefail
+
+FAILED=0
+
+# ── Ruff: full-repo check ────────────────────────────────────────────────────
+if [[ "${SKIP_RUFF:-0}" == "1" ]]; then
+    echo "[pre-push] SKIP_RUFF=1 set — skipping ruff checks."
+else
+    if ! command -v ruff &>/dev/null; then
+        echo "[pre-push] WARNING: ruff not found in PATH — skipping ruff checks."
+        echo "           Install with: pip install ruff  or  uv add ruff --dev"
+    else
+        echo "[pre-push] Running ruff format --check on full repo..."
+        if ! ruff format --check . 2>&1; then
+            echo ""
+            echo "[pre-push] FORMAT ERRORS detected."
+            echo "           Fix with: ruff format ."
+            FAILED=1
+        fi
+
+        echo "[pre-push] Running ruff check on full repo..."
+        if ! ruff check . 2>&1; then
+            echo ""
+            echo "[pre-push] LINT ERRORS detected."
+            echo "           Auto-fixable issues: ruff check --fix ."
+            echo "           Note: F401 (unused imports) must be fixed manually."
+            FAILED=1
+        fi
+
+        if [[ "$FAILED" -eq 0 ]]; then
+            echo "[pre-push] Ruff checks passed."
+        fi
+    fi
+fi
+
+# ── Final result ─────────────────────────────────────────────────────────────
+if [[ "$FAILED" -eq 1 ]]; then
+    echo ""
+    echo "[pre-push] Push blocked. Fix the issues above and try again."
+    echo "           Emergency skip: SKIP_RUFF=1 git push"
+    exit 1
+fi
+
+echo "[pre-push] All checks passed. Pushing..."
+exit 0

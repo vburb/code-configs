@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Copy to: <project-root>/.git/hooks/pre-commit
+# Then make executable: chmod +x .git/hooks/pre-commit
+#
+# Checks only staged .py files with ruff.
+# Warns and exits 0 (non-blocking) if ruff is not installed.
+# Does NOT auto-fix — prints instructions instead so you stay in control.
+#
+# Skip this hook for a single commit:
+#   SKIP_RUFF=1 git commit -m "..."
+
+set -euo pipefail
+
+# ── Opt-out flag ────────────────────────────────────────────────────────────
+if [[ "${SKIP_RUFF:-0}" == "1" ]]; then
+    echo "[pre-commit] SKIP_RUFF=1 set — skipping ruff checks."
+    exit 0
+fi
+
+# ── Ruff availability check ─────────────────────────────────────────────────
+if ! command -v ruff &>/dev/null; then
+    echo "[pre-commit] WARNING: ruff not found in PATH — skipping checks."
+    echo "             Install with: pip install ruff  or  uv add ruff --dev"
+    exit 0
+fi
+
+# ── Collect staged Python / notebook files ───────────────────────────────────
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM \
+    | grep -E '\.py$' || true)
+
+if [[ -z "$STAGED_FILES" ]]; then
+    exit 0
+fi
+
+echo "[pre-commit] Running ruff on staged files..."
+
+FAILED=0
+
+# ── Format check ─────────────────────────────────────────────────────────────
+if ! echo "$STAGED_FILES" | xargs ruff format --check 2>&1; then
+    echo ""
+    echo "[pre-commit] FORMAT ERRORS detected."
+    echo "             Fix with: ruff format \$(git diff --cached --name-only --diff-filter=ACM | grep -E '\\.py\$')"
+    echo "             Then re-stage the files and commit again."
+    FAILED=1
+fi
+
+# ── Lint check ───────────────────────────────────────────────────────────────
+if ! echo "$STAGED_FILES" | xargs ruff check 2>&1; then
+    echo ""
+    echo "[pre-commit] LINT ERRORS detected."
+    echo "             Auto-fixable issues: ruff check --fix \$(git diff --cached --name-only --diff-filter=ACM | grep -E '\\.py\$')"
+    echo "             Note: F401 (unused imports) must be fixed manually."
+    FAILED=1
+fi
+
+if [[ "$FAILED" -eq 1 ]]; then
+    echo ""
+    echo "[pre-commit] Commit blocked. Fix the issues above and try again."
+    echo "             To skip this hook (use sparingly): SKIP_RUFF=1 git commit -m \"...\""
+    exit 1
+fi
+
+echo "[pre-commit] All checks passed."
+exit 0

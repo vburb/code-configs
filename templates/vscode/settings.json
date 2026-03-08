@@ -1,0 +1,21 @@
+// Copy to: <project-root>/.vscode/settings.json
+// Works in both VS Code and Cursor.
+//
+// Recommended extensions (install once per editor, not per project):
+//   RUFF   — Ruff linter + formatter
+{
+    // Enable Ruff as linter
+    "[python]": {
+        "editor.formatOnType": true,
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports": "explicit"
+        },
+        "editor.showUnused": true
+    },
+    "ruff.enable": true,
+    "ruff.lineLength": 180
+}

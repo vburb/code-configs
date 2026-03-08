@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": "python3 ./hooks/guard-dangerous-commands.py",
+        "timeout": 10
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": "python3 ./hooks/format-python.py",
+        "timeout": 30
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": "python3 ./hooks/protect-secrets.py",
+        "timeout": 5
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "python3 ./hooks/scan-prompt-secrets.py",
+        "timeout": 5
+      }
+    ]
+  }
+}
