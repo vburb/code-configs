@@ -17,6 +17,14 @@
     },
     "default_agent": "general",
     "autoupdate": true,
+    "formatter": {
+        "ruff": {
+            "disabled": true
+        },
+        "uv": {
+            "disabled": true
+        }
+    },
     "compaction": {
         "auto": true,
         "prune": true,
@@ -36,6 +44,7 @@
             "git status *": "allow",
             "git branch *": "allow",
             "git checkout *": "allow",
+            "git commit *": "allow",
             "uv *": "allow",
             "python3 *": "allow",
             "ruff *": "allow",
@@ -46,7 +55,6 @@
             "tail *": "allow",
             "head *": "allow",
             "rm *": "deny",
-            "git commit *": "deny",
             "git push *": "deny",
             "git reset *": "deny",
             "curl *": "deny",
